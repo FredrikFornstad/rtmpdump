@@ -1,13 +1,14 @@
-%lib_package rtmp 0
+%define commit a107cef9b392616dff54fabfd37f985ee2190a6f
+%lib_package rtmp 1
 
 Summary: A toolkit for RTMP streams
 Name: rtmpdump
-Version: 2.3
+Version: 2.4
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Libraries
 URL: http://rtmpdump.mplayerhq.hu/
-Source0: http://rtmpdump.mplayerhq.hu/download/rtmpdump-%{version}.tgz
+Source0: https://github.com/mirror/rtmpdump/archive/%{commit}.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: openssl-devel
 
@@ -17,7 +18,7 @@ supported, including rtmp://, rtmpt://, rtmpe://, rtmpte://, and
 rtmps://.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{commit}
 
 %build
 make
@@ -46,6 +47,10 @@ rm -rf %{buildroot}
 %{_mandir}/man8/rtmpgw.8*
 
 %changelog
+* Sat May 2 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 2.4-1
+- Changed source origin to Git
+- Updated to latest release with support for RTMPE version 9
+
 * Mon Mar 14 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 2.3-1
 - Initial build.
 
