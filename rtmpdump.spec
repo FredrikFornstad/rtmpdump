@@ -1,21 +1,38 @@
 %define commit a107cef9b392616dff54fabfd37f985ee2190a6f
-%lib_package rtmp 1
+%global libver 1
 
 Summary: A toolkit for RTMP streams
 Name: rtmpdump
 Version: 2.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv2
 Group: System Environment/Libraries
 URL: http://rtmpdump.mplayerhq.hu/
 Source0: https://github.com/mirror/rtmpdump/archive/%{commit}.zip
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires: openssl-devel, atrpms-rpm-config
+BuildRequires: openssl-devel
+Requires: %{name}-libs_%{libver}
 
 %description
 rtmpdump is a toolkit for RTMP streams. All forms of RTMP are
 supported, including rtmp://, rtmpt://, rtmpe://, rtmpte://, and
 rtmps://.
+
+%package libs_%{libver}
+Summary: rtmpdump shared library
+Group: Development/Libraries
+Obsoletes: librtmp*
+
+%description libs_%{libver}
+This package contains the rtmpdump shared library
+
+%package devel
+Summary: rtmpdump shared library development files
+Group: Development/Libraries
+Requires:  %{name}-libs_%{libver}
+
+%description devel
+This package contains the rtmpdump shared library development files
 
 %prep
 %setup -q -n %{name}-%{commit}
@@ -33,6 +50,10 @@ make install \
   libdir=%{_libdir} \
   DESTDIR=%{buildroot}
 
+%post libs_%{libver} -p /sbin/ldconfig
+
+%postun libs_%{libver} -p /sbin/ldconfig
+
 %clean
 rm -rf %{buildroot}
 
@@ -46,7 +67,22 @@ rm -rf %{buildroot}
 %{_mandir}/man1/rtmpdump.1*
 %{_mandir}/man8/rtmpgw.8*
 
+%files libs_%{libver}
+%defattr(-,root,root,-)
+%{_libdir}/librtmp.so.%{libver}
+
+%files devel
+%defattr(-,root,root,-)
+%{_includedir}/*
+%{_libdir}/*.a
+%{_libdir}/*.so
+%{_libdir}/pkgconfig/*
+%{_mandir}/man3/*
+
 %changelog
+* Sat Jun 13 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 2.4-3
+- Removed dependency on atrpms scripts to comply with ClearOS policy
+
 * Wed May 6 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 2.4-2
 - Added buildrequirement atrpms-rpm-config
 
