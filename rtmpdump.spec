@@ -1,10 +1,10 @@
-%define commit a107cef9b392616dff54fabfd37f985ee2190a6f
+%define commit fa8646daeb19dfd12c181f7d19de708d623704c0
 %global libver 1
 
 Summary: A toolkit for RTMP streams
 Name: rtmpdump
 Version: 2.4
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPLv2
 Group: System Environment/Libraries
 URL: http://rtmpdump.mplayerhq.hu/
@@ -80,6 +80,9 @@ rm -rf %{buildroot}
 %{_mandir}/man3/*
 
 %changelog
+* Sat Aug 20 2016 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 2.4-4
+- New upstream release
+
 * Sat Jun 13 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 2.4-3
 - Removed dependency on atrpms scripts to comply with ClearOS policy
 
